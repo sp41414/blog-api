@@ -18,6 +18,10 @@ postRouter.get("/posts/:id", postController.postById);
 // get post comments by id
 postRouter.get("/posts/:id/comments", postController.postCommentsById);
 // PROTECTED ROUTES
+// get all non-published posts
+postRouter.get("/posts/drafts", postController.draft);
+// get non-published posts by ID
+postRouter.get("/posts/drafts/:id", postController.draftById);
 // create new comment
 postRouter.post(
     "/posts/:id/comments",
