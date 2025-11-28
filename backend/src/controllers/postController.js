@@ -1,5 +1,18 @@
 const passport = require("passport");
 const db = require("../db/prisma");
+const { matchedData, validationResult, body } = require("express-validator");
+
+const validateComment = [
+    body("text")
+        .exists()
+        .withMessage("Comment text is required.")
+        .isString()
+        .withMessage("Comment text must be a string.")
+        .length({ min: 1, max: 200 })
+        .withMessage("Comment must be between 1 and 200 characters long")
+        .trim()
+        .escape(),
+];
 
 const posts = async (req, res, next) => {
     try {
@@ -75,7 +88,7 @@ const drafts = [
                     published: false,
                 },
             });
-            if (!posts) {
+            if (posts.length === 0) {
                 return res.status(404).json({
                     error: {
                         message: "No draft posts found",
@@ -169,6 +182,60 @@ const postCommentsById = async (req, res, next) => {
     }
 };
 
+const newComment = [
+    passport.authenticate("jwt", { session: false }),
+    validateComment,
+    async (req, res, next) => {
+        const err = validationResult(req);
+        if (!err.isEmpty()) {
+            return res.status(400).json({
+                error: {
+                    message: err.array(),
+                    timestamp: new Date().toISOString(),
+                },
+            });
+        }
+        if (!req.params.id) {
+            return res.status(400).json({
+                error: {
+                    message: "Please provide a valid post ID",
+                    timestamp: new Date().toISOString(),
+                },
+            });
+        }
+        const { text } = matchedData(req);
+        try {
+            const post = await db.posts.findFirst({
+                where: {
+                    id: Number(req.params.id),
+                    published: true,
+                },
+            });
+            if (!post) {
+                return res.status(404).json({
+                    error: {
+                        message: "Post not found",
+                        timestamp: new Date().toISOString(),
+                    },
+                });
+            }
+            const comment = await db.comments.create({
+                data: {
+                    text: text,
+                    usersId: req.user.id,
+                    postsId: Number(req.params.id),
+                },
+            });
+            res.json({
+                comment: comment,
+                message: "Created comment successfully",
+            });
+        } catch (err) {
+            next(err);
+        }
+    },
+];
+
 module.exports = {
     posts,
     postById,
@@ -176,6 +243,7 @@ module.exports = {
     draftById,
     postCommentsById,
     newComment,
+    // TODO
     newPost,
     updatePost,
     updateComment,
