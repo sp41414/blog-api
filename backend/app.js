@@ -1,6 +1,9 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const routers = {
+    authRouter: require("./src/routes/authRoutes"),
+};
 
 const app = express();
 app.use(express.json());
@@ -10,6 +13,7 @@ app.use(
         origin: process.env.FRONTEND_URL,
     }),
 );
+app.use("/auth", routers.authRouter);
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({
