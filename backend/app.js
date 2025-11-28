@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const routers = {
     authRouter: require("./src/routes/authRoutes"),
+    postRouter: require("./src/routes/postRoutes"),
 };
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(
     }),
 );
 app.use("/auth", routers.authRouter);
+app.use("/posts", routers.postRouter);
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({
