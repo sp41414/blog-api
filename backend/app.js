@@ -1,12 +1,15 @@
 require("dotenv").config();
 const express = require("express");
+const helmet = require("helmet");
 const cors = require("cors");
 const routers = {
     authRouter: require("./src/routes/authRoutes"),
     postRouter: require("./src/routes/postRoutes"),
 };
+const passport = require("./src/auth/passport");
 
 const app = express();
+app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
@@ -16,6 +19,7 @@ app.use(
 );
 app.use("/auth", routers.authRouter);
 app.use("/posts", routers.postRouter);
+app.use(passport.initialize());
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({
