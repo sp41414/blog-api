@@ -2,35 +2,36 @@ import { useState, useEffect } from "react";
 
 export default function useAuth() {
     const [user, setUser] = useState(null);
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        async function checkUser() {
+        async function checkLogin() {
             try {
-                const status = await fetch(
+                setLoading(true);
+                const response = await fetch(
                     `${import.meta.env.VITE_BACKEND_URL}/auth/status`,
                     {
                         credentials: "include",
                         headers: {
-                            Authorization: `Bearer ${localStorage.getItem("token")}`,
+                            Authorization: `Bearer ${localStorage.getItem(token)}`,
                         },
                     },
                 );
-                if (!status.ok) {
-                    throw new Error("Not authenticated");
+                const data = await response.json();
+                if (data.user) {
+                    setUser(data.user);
+                } else {
+                    setUser(null);
                 }
-                const data = await status.json();
-                setUser(data.user);
+                setLoading(false);
             } catch (err) {
                 console.error(err);
-                setError(err);
-                setLoading(false);
+                setUser(null);
             } finally {
                 setLoading(false);
             }
         }
-        checkUser();
+        checkLogin();
     }, []);
-    return { user, error, loading };
+    return { user, loading, setUser };
 }
