@@ -88,14 +88,13 @@ const signup = [
             }
             const salt = await bcrypt.genSalt();
             const hashedPassword = await bcrypt.hash(password, salt);
-            const createdUser = await db.users.create({
+            await db.users.create({
                 data: {
                     username: username,
                     passwordHash: hashedPassword,
                 },
             });
             res.status(201).json({
-                user: createdUser,
                 details: "User created successfully",
             });
         } catch (err) {

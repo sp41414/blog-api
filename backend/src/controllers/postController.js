@@ -186,12 +186,9 @@ const postCommentsById = async (req, res, next) => {
                 postsId: Number(req.params.id),
             },
         });
-        if (!comments) {
-            return res.status(404).json({
-                error: {
-                    message: "No post comments found",
-                    timestamp: new Date().toISOString(),
-                },
+        if (comments.length === 0) {
+            return res.status(200).json({
+                message: "No post comments found",
             });
         }
         res.json({
@@ -300,7 +297,17 @@ const newPost = [
 
 const updatePost = [
     passport.authenticate("jwt", { session: false }),
+    validatePost,
     async (req, res, next) => {
+        const errs = validationResult(req);
+        if (!errs.isEmpty()) {
+            return res.status(400).json({
+                error: {
+                    message: errs.array(),
+                    timestamp: new Date().toISOString(),
+                },
+            });
+        }
         if (!req.user.admin) {
             return res.status(403).json({
                 error: {
@@ -410,8 +417,6 @@ const deletePost = [
             const post = await db.posts.delete({
                 where: {
                     id: postId,
-                    // extra-safety measure
-                    usersId: req.user.id,
                 },
             });
             return res.json({
