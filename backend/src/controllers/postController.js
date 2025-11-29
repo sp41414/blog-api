@@ -33,6 +33,10 @@ const validatePost = [
         .isLength({ min: 1 })
         .withMessage("Text cannot be empty")
         .escape(),
+    body("published")
+        .optional()
+        .isBoolean()
+        .withMessage("Published must be a boolean value"),
 ];
 
 // for optional fields (different)
@@ -53,6 +57,10 @@ const validatePostUpdate = [
         .isLength({ min: 1 })
         .withMessage("Text cannot be empty")
         .escape(),
+    body("published")
+        .optional()
+        .isBoolean()
+        .withMessage("Published must be a boolean value"),
 ];
 
 const posts = async (req, res, next) => {
@@ -63,11 +71,9 @@ const posts = async (req, res, next) => {
             },
         });
         if (posts.length === 0) {
-            return res.status(404).json({
-                error: {
-                    message: "Posts not found",
-                    timestamp: new Date().toISOString(),
-                },
+            return res.status(200).json({
+                posts: [],
+                message: "Posts not found",
             });
         }
         res.json({
@@ -201,6 +207,19 @@ const postCommentsById = async (req, res, next) => {
         });
     }
     try {
+        const post = await db.posts.findFirst({
+            where: {
+                id: Number(req.params.id),
+            },
+        });
+        if (!post) {
+            return res.status(404).json({
+                error: {
+                    message: "Post not found",
+                    timestamp: new Date().toISOString(),
+                },
+            });
+        }
         const comments = await db.comments.findMany({
             where: {
                 postsId: Number(req.params.id),
@@ -297,13 +316,14 @@ const newPost = [
             });
         }
         try {
-            const { title, text } = matchedData(req);
+            const { title, text, published } = matchedData(req);
             const post = await db.posts.create({
                 data: {
                     title: title,
                     text: text,
                     usersId: req.user.id,
                     author: req.user.username,
+                    published: published,
                 },
             });
             return res.json({
@@ -346,7 +366,7 @@ const updatePost = [
             });
         }
         try {
-            const { title, text } = matchedData(req);
+            const { title, text, published } = matchedData(req);
             const postId = Number(req.params.id);
 
             const updatedPost = await db.posts.update({
@@ -356,6 +376,7 @@ const updatePost = [
                 data: {
                     title: title,
                     text: text,
+                    published: published,
                 },
             });
 
