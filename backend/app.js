@@ -7,6 +7,16 @@ const routers = {
     postRouter: require("./src/routes/postRoutes"),
 };
 const passport = require("./src/auth/passport");
+const limit = require("express-rate-limit");
+
+// brute force protection
+const limiter = limit({
+    windowMs: 1 * 60 * 1000, // 1 minute
+    limit: 100, // 100 requests every 1 minute
+    standardHeaders: "draft-8",
+    legacyHeaders: false,
+    ipv6Subnet: 56,
+});
 
 const app = express();
 app.use(helmet());
@@ -17,9 +27,10 @@ app.use(
         origin: process.env.FRONTEND_URL,
     }),
 );
+app.use(limiter);
+app.use(passport.initialize());
 app.use("/auth", routers.authRouter);
 app.use("/posts", routers.postRouter);
-app.use(passport.initialize());
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({

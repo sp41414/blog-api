@@ -1,45 +1,28 @@
 const { Router } = require("express");
 const postRouter = Router();
 const postController = require("../controllers/postController");
-const limit = require("express-rate-limit");
-
-const commentLimiter = limit({
-    windowMs: 5 * 60 * 1000, // 5 minutes
-    limit: 3, // 3 comments every 5 minutes
-    standardHeaders: "draft-8",
-    legacyHeaders: false,
-    ipv6Subnet: 56,
-});
 
 // get all posts
-postRouter.get("/posts", postController.posts);
-// get post by id
-postRouter.get("/posts/:id", postController.postById);
-// get post comments by id
-postRouter.get("/posts/:id/comments", postController.postCommentsById);
-// PROTECTED ROUTES
+postRouter.get("/", postController.posts);
 // get all non-published posts
-postRouter.get("/posts/drafts", postController.draft);
+postRouter.get("/drafts", postController.draft);
 // get non-published posts by ID
-postRouter.get("/posts/drafts/:id", postController.draftById);
+postRouter.get("/drafts/:id", postController.draftById);
+// get post by id
+postRouter.get("/:id", postController.postById);
+// get post comments by id
+postRouter.get("/:id/comments", postController.postCommentsById);
 // create new comment
-postRouter.post(
-    "/posts/:id/comments",
-    commentLimiter,
-    postController.newComment,
-);
+postRouter.post("/:id/comments", postController.newComment);
 // create new post
-postRouter.post("/posts", postController.newPost);
+postRouter.post("/", postController.newPost);
 // edit post
-postRouter.put("/posts/:id", postController.updatePost);
+postRouter.put("/:id", postController.updatePost);
 // edit comment
-postRouter.put("/posts/:id/comments/:commentId", postController.updateComment);
+postRouter.put("/:id/comments/:commentId", postController.updateComment);
 // delete post
-postRouter.delete("/posts/:id", postController.deletePost);
+postRouter.delete("/:id", postController.deletePost);
 // delete comment
-postRouter.delete(
-    "/posts/:id/comments/:commentId",
-    postController.deleteComment,
-);
+postRouter.delete("/:id/comments/:commentId", postController.deleteComment);
 
 module.exports = postRouter;
