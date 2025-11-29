@@ -8,12 +8,17 @@ export default function useAuth() {
         async function checkLogin() {
             try {
                 setLoading(true);
+                const token = localStorage.getItem("token");
+                if (!token) {
+                    setLoading(false);
+                    return;
+                }
                 const response = await fetch(
                     `${import.meta.env.VITE_BACKEND_URL}/auth/status`,
                     {
                         credentials: "include",
                         headers: {
-                            Authorization: `Bearer ${localStorage.getItem(token)}`,
+                            Authorization: `Bearer ${token}`,
                         },
                     },
                 );
@@ -23,7 +28,6 @@ export default function useAuth() {
                 } else {
                     setUser(null);
                 }
-                setLoading(false);
             } catch (err) {
                 console.error(err);
                 setUser(null);
