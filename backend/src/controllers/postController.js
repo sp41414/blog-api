@@ -35,6 +35,26 @@ const validatePost = [
         .escape(),
 ];
 
+// for optional fields (different)
+const validatePostUpdate = [
+    body("title")
+        .optional()
+        .isString()
+        .withMessage("Title must be a string.")
+        .trim()
+        .isLength({ min: 1, max: 100 })
+        .withMessage("Title must be between 1 and 100 characters long")
+        .escape(),
+    body("text")
+        .optional()
+        .isString()
+        .withMessage("Text must be a string.")
+        .trim()
+        .isLength({ min: 1 })
+        .withMessage("Text cannot be empty")
+        .escape(),
+];
+
 const posts = async (req, res, next) => {
     try {
         const posts = await db.posts.findMany({
@@ -188,6 +208,7 @@ const postCommentsById = async (req, res, next) => {
         });
         if (comments.length === 0) {
             return res.status(200).json({
+                comments: [],
                 message: "No post comments found",
             });
         }
@@ -297,7 +318,7 @@ const newPost = [
 
 const updatePost = [
     passport.authenticate("jwt", { session: false }),
-    validatePost,
+    validatePostUpdate,
     async (req, res, next) => {
         const errs = validationResult(req);
         if (!errs.isEmpty()) {
@@ -325,7 +346,7 @@ const updatePost = [
             });
         }
         try {
-            const { title, text } = req.body;
+            const { title, text } = matchedData(req);
             const postId = Number(req.params.id);
 
             const updatedPost = await db.posts.update({
@@ -333,8 +354,8 @@ const updatePost = [
                     id: postId,
                 },
                 data: {
-                    title: title ?? undefined,
-                    text: text ?? undefined,
+                    title: title,
+                    text: text,
                 },
             });
 
