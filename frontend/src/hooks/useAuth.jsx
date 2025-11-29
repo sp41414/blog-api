@@ -73,7 +73,9 @@ export default function useAuth() {
             } else {
                 return {
                     success: false,
-                    error: data.error?.message || "Login failed",
+                    error:
+                        data.error?.message.map((err) => err.msg).join(", ") ||
+                        "Login failed",
                 };
             }
         } catch (err) {
@@ -103,7 +105,9 @@ export default function useAuth() {
             } else {
                 return {
                     success: false,
-                    error: data.error?.message || "Signup failed",
+                    error:
+                        data.error?.message.map((err) => err.msg).join(", ") ||
+                        "Signup failed",
                 };
             }
         } catch (err) {
