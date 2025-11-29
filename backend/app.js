@@ -2,11 +2,11 @@ require("dotenv").config();
 const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");
+const passport = require("./src/auth/passport");
 const routers = {
     authRouter: require("./src/routes/authRoutes"),
     postRouter: require("./src/routes/postRoutes"),
 };
-const passport = require("./src/auth/passport");
 const limit = require("express-rate-limit");
 
 // brute force protection

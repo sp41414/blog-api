@@ -1,7 +1,7 @@
 const passport = require("passport");
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
-const SECRET = process.env.JWTSECRET;
+const SECRET = process.env.SECRET;
 const db = require("../db/prisma");
 
 const opts = {
@@ -26,3 +26,5 @@ passport.use(
         }
     }),
 );
+
+module.exports = passport;

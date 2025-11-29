@@ -8,7 +8,7 @@ const validateComment = [
         .withMessage("Comment text is required.")
         .isString()
         .withMessage("Comment text must be a string.")
-        .length({ min: 1, max: 200 })
+        .isLength({ min: 1, max: 200 })
         .withMessage("Comment must be between 1 and 200 characters long")
         .trim()
         .escape(),
