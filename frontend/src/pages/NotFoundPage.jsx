@@ -1,6 +1,7 @@
 import NavBar from "../components/NavBar";
 import { Link } from "react-router";
 import NotFound from "../components/ui/NotFound";
+import Footer from "../components/Footer";
 
 export default function ErrorPage() {
   return (
@@ -20,6 +21,7 @@ export default function ErrorPage() {
           </Link>
         </section>
       </main>
+      <Footer />
     </div>
   );
 }

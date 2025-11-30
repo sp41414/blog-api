@@ -62,9 +62,9 @@ export default function HomePage() {
               <PostsCards posts={posts} />
             </section>
           </main>
-          <Footer />
         </>
       )}
+      <Footer />
     </div>
   );
 }

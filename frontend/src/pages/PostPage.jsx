@@ -6,6 +6,7 @@ import ErrorAlert from "../components/ui/ErrorAlert";
 import Footer from "../components/Footer";
 import { Link } from "react-router";
 import { AuthContext } from "../contexts/AuthContext";
+import Comments from "../components/Comments";
 
 export default function PostPage() {
   const { user } = useContext(AuthContext);
@@ -32,7 +33,6 @@ export default function PostPage() {
           `${import.meta.env.VITE_BACKEND_URL}/posts/${id}/comments`
         );
         const postCommentsData = await postComments.json();
-        console.log(postCommentsData);
         setComments(postCommentsData.comments);
       } catch (err) {
         console.error(err);
@@ -96,38 +96,13 @@ export default function PostPage() {
                     )}
                   </div>
                 </h3>
-                <div className="space-y-6">
-                  {comments.length > 0 ? (
-                    comments.map((comment) => {
-                      return (
-                        <div
-                          key={comment.id}
-                          className="bg-neutral-800 p-6 rounded-lg border border-neutral-800/50"
-                        >
-                          <div className="flex items-start mb-2">
-                            <span className="text-emerald-400 font-medium">
-                              {/* this should never happen, as the comment author is REQUIRED */}
-                              {comment.author ? comment.author : "Anonymous"}
-                            </span>
-                          </div>
-                          <p className="text-neutral-300 text-sm sm:text-base">
-                            {comment.text}
-                          </p>
-                        </div>
-                      );
-                    })
-                  ) : (
-                    <p className="text-neutral-500 italic text-center">
-                      No comments yet!
-                    </p>
-                  )}
-                </div>
+                <Comments comments={comments} />
               </section>
             </article>
           </main>
-          <Footer />
         </>
       )}
+      <Footer />
     </div>
   );
 }

@@ -1,7 +1,9 @@
-import { createBrowserRouter, RouterProvider } from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import PostPage from "./pages/PostPage";
+import LoginPage from "./pages/LoginPage";
+import Logout from "./pages/Logout";
 
 const AppRoutes = () => {
   const routes = createBrowserRouter([
@@ -15,12 +17,17 @@ const AppRoutes = () => {
     },
     {
       path: "/login",
+      element: <LoginPage />,
     },
     {
       path: "/signup",
     },
     {
       path: "/:id/comments/new",
+    },
+    {
+      path: "/logout",
+      element: <Logout />,
     },
     {
       path: "*",

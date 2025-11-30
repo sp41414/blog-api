@@ -73,14 +73,12 @@ export default function useAuth() {
       } else {
         return {
           success: false,
-          error:
-            data.error?.message.map((err) => err.msg).join(", ") ||
-            "Login failed",
+          error: data.error?.message || data.message || "Login failed",
         };
       }
     } catch (err) {
       console.error(err);
-      return { success: false, error: err };
+      return { success: false, error: err.message || "Network error" };
     }
   };
 
@@ -105,9 +103,7 @@ export default function useAuth() {
       } else {
         return {
           success: false,
-          error:
-            data.error?.message.map((err) => err.msg).join(", ") ||
-            "Signup failed",
+          error: data.error.message || "Signup failed",
         };
       }
     } catch (err) {
