@@ -3,7 +3,7 @@ import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import PostsCards from "../components/PostsCards";
 import Spinner from "../components/ui/LoadingSpinner";
-import { ErrorAlert } from "../components/ui/ErrorAlert";
+import ErrorAlert from "../components/ui/ErrorAlert";
 
 export default function HomePage() {
   const [posts, setPosts] = useState([]);
@@ -33,7 +33,6 @@ export default function HomePage() {
     }
     fetchPosts();
   }, []);
-  console.log(posts);
 
   return (
     <div className="flex flex-col min-h-screen bg-neutral-900 overflow-x-hidden">
@@ -44,7 +43,7 @@ export default function HomePage() {
         </main>
       )}
       {error && (
-        <main className="flex-1 p-4">
+        <main className="flex-1">
           <ErrorAlert message={error} />
         </main>
       )}

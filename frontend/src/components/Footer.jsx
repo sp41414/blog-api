@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
-    <footer className="bg-neutral-950 flex flex-col md:flex-row p-4 items-center justify-center">
-      <p className="text-neutral-400 mr-4">Made by</p>
+    <footer className="bg-neutral-950 flex flex-col gap-2 md:flex-row p-4 items-center justify-center">
+      <p className="text-neutral-400">Made by</p>
       <a
         href="https://github.com/sp41414"
         target="_blank"

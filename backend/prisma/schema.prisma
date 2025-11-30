@@ -27,6 +27,7 @@ model Posts {
 model Comments {
     id      Int     @id @default(autoincrement())
     text    String
+    author  String
     posts   Posts?  @relation(fields: [postsId], references: [id], onDelete: Cascade)
     postsId Int?
     users   Users?  @relation(fields: [usersId], references: [id], onDelete: Cascade)

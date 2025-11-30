@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import HomePage from "./pages/HomePage";
-import ErrorPage from "./pages/ErrorPage";
+import NotFoundPage from "./pages/NotFoundPage";
+import PostPage from "./pages/PostPage";
 
 const AppRoutes = () => {
   const routes = createBrowserRouter([
@@ -10,10 +11,20 @@ const AppRoutes = () => {
     },
     {
       path: "/post/:id",
+      element: <PostPage />,
+    },
+    {
+      path: "/login",
+    },
+    {
+      path: "/signup",
+    },
+    {
+      path: "/:id/comments/new",
     },
     {
       path: "*",
-      element: <ErrorPage />,
+      element: <NotFoundPage />,
     },
   ]);
 
