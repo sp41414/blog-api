@@ -39,7 +39,7 @@ export default function HomePage() {
     <div className="flex flex-col min-h-screen bg-neutral-900 overflow-x-hidden">
       <NavBar />
       {loading && (
-        <main className="flex-1 items-center justify-center">
+        <main className="flex-1 flex flex-col items-center justify-center">
           <Spinner size="xl" />
         </main>
       )}
