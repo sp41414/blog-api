@@ -18,14 +18,26 @@ export default function NavBar() {
           {loading ? (
             <li className="text-neutral-500 animate-pulse">Loading...</li>
           ) : user ? (
-            <li>
-              <Link
-                to="/logout"
-                className="inline-block text-neutral-400 hover:text-rose-400 transition-colors duration-200"
-              >
-                Logout
-              </Link>
-            </li>
+            <>
+              <li>
+                <Link
+                  to="/logout"
+                  className="inline-block text-neutral-400 hover:text-rose-400 transition-colors duration-200"
+                >
+                  Logout
+                </Link>
+              </li>
+              {user.admin && (
+                <li>
+                  <Link
+                    to="/dashboard"
+                    className="inline-block text-neutral-400 hover:text-emerald-300 transition-colors duration-200"
+                  >
+                    Dashboard
+                  </Link>
+                </li>
+              )}
+            </>
           ) : (
             <>
               <li>

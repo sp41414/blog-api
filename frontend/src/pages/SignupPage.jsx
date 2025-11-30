@@ -1,17 +1,21 @@
-import { useContext, useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
-import { AuthContext } from "../contexts/AuthContext";
-import { useNavigate } from "react-router";
-import Spinner from "../components/ui/LoadingSpinner";
 import Footer from "../components/Footer";
-import { Link } from "react-router";
+import Spinner from "../components/ui/LoadingSpinner";
 import ErrorAlert from "../components/ui/ErrorAlert";
+import { Link } from "react-router";
+import { useNavigate } from "react-router";
+import { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 
-export default function LoginPage() {
+export default function SignupPage() {
   const navigate = useNavigate();
-  const { user, login, loading } = useContext(AuthContext);
+  const { user, signup, loading } = useContext(AuthContext);
 
-  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+    confirmPassword: "",
+  });
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -30,7 +34,13 @@ export default function LoginPage() {
     setIsSubmitting(true);
     setError("");
 
-    const result = await login(formData.username, formData.password);
+    if (formData.password !== formData.confirmPassword) {
+      setError("Password and Confirm Password fields aren't matching!");
+      setIsSubmitting(false);
+      return;
+    }
+
+    const result = await signup(formData.username, formData.password);
 
     if (result.success) {
       navigate("/");
@@ -39,7 +49,7 @@ export default function LoginPage() {
         setError(result.error.map((error) => error.msg).join(", "));
         setIsSubmitting(false);
       } else {
-        setError(result.error || "Failed to login");
+        setError(result.error || "Failed to signup");
         setIsSubmitting(false);
       }
     }
@@ -49,7 +59,7 @@ export default function LoginPage() {
     <div className="flex flex-col min-h-screen bg-neutral-900 overflow-x-hidden">
       <NavBar />
       {loading && (
-        <main className="flex-1 flex flex-col items-center justify-center">
+        <main className="flex-1 flex flex-col justify-center items-center">
           <Spinner size="xl" />
         </main>
       )}
@@ -63,10 +73,10 @@ export default function LoginPage() {
           <div className="w-full max-w-md bg-neutral-800 border border-neutral-800/50 rounded-xl shadow-xl p-8 backdrop-blur-sm">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-emerald-500 mb-2">
-                Welcome Back
+                Welcome
               </h2>
               <p className="text-neutral-400 text-sm">
-                Enter your information to access your account
+                Fill in the information to create an account
               </p>
             </div>
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -98,6 +108,22 @@ export default function LoginPage() {
                   value={formData.password}
                   onChange={handleChange}
                   required
+                  className="w-full bg-neutral-950 border border-neutral-700 rounded px-4 py-3 text-neutral-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-2oo placeholder-neutral-600 mb-8"
+                  placeholder="••••••••"
+                />
+
+                <label
+                  htmlFor="confirmPassword"
+                  className="block text-sm font-medium text-neutral-300 mb-2"
+                >
+                  Confirm Password
+                </label>
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  required
                   className="w-full bg-neutral-950 border border-neutral-700 rounded px-4 py-3 text-neutral-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-2oo placeholder-neutral-600"
                   placeholder="••••••••"
                 />
@@ -111,17 +137,17 @@ export default function LoginPage() {
                 {isSubmitting ? (
                   <Spinner size="sm" color="text-white" />
                 ) : (
-                  "Sign In"
+                  "Sign Up"
                 )}
               </button>
 
               <div className="mt-6 text-center text-sm text-neutral-400">
-                Don't have an account?
+                Already have an account?
                 <Link
-                  to="/signup"
+                  to="/login"
                   className="text-emerald-500 hover:text-emerald-400 font-medium transition-colors hover:underline duration-200 ml-2"
                 >
-                  Sign Up
+                  Login
                 </Link>
               </div>
             </form>

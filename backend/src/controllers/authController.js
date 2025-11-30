@@ -16,9 +16,9 @@ const validateUser = [
     .trim()
     .isLength({ min: 6, max: 32 })
     .withMessage(`Password must be between 6 and 32 characters long`)
-    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[\s\S]{6,32}$/)
+    .matches(/^[a-zA-Z0-9!@#$%^&*\s]{6,32}$/)
     .withMessage(
-      `Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (e.g., !@#$%^&*).`
+      `Password can only contain letters, numbers, and special characters (!@#$%^&*).`
     ),
 ];
 

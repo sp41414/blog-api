@@ -4,6 +4,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import PostPage from "./pages/PostPage";
 import LoginPage from "./pages/LoginPage";
 import Logout from "./pages/Logout";
+import SignupPage from "./pages/SignupPage";
 
 const AppRoutes = () => {
   const routes = createBrowserRouter([
@@ -21,6 +22,7 @@ const AppRoutes = () => {
     },
     {
       path: "/signup",
+      element: <SignupPage />,
     },
     {
       path: "/:id/comments/new",
@@ -28,6 +30,9 @@ const AppRoutes = () => {
     {
       path: "/logout",
       element: <Logout />,
+    },
+    {
+      path: "/dashboard",
     },
     {
       path: "*",
