@@ -415,17 +415,29 @@ const updateComment = [
       const commentId = Number(req.params.commentId);
 
       const { text } = req.body;
-
-      const comment = await db.comments.update({
-        where: {
-          id: commentId,
-          postsId: postId,
-          usersId: req.user.id,
-        },
-        data: {
-          text: text ?? undefined,
-        },
-      });
+      let comment;
+      if (req.user.admin) {
+        comment = await db.comments.update({
+          where: {
+            id: commentId,
+            postsId: postId,
+          },
+          data: {
+            text: text ?? undefined,
+          },
+        });
+      } else {
+        comment = await db.comments.update({
+          where: {
+            id: commentId,
+            postsId: postId,
+            usersId: req.user.id,
+          },
+          data: {
+            text: text ?? undefined,
+          },
+        });
+      }
       return res.json({
         comment: comment,
         message: "Comment updated successfully",
@@ -494,13 +506,24 @@ const deleteComment = [
     try {
       const postId = Number(req.params.id);
       const commentId = Number(req.params.commentId);
-      const comment = await db.comments.delete({
-        where: {
-          id: commentId,
-          usersId: req.user.id,
-          postsId: postId,
-        },
-      });
+
+      let comment;
+      if (req.user.admin) {
+        comment = await db.comments.delete({
+          where: {
+            id: commentId,
+            postsId: postId,
+          },
+        });
+      } else {
+        comment = await db.comments.delete({
+          where: {
+            id: commentId,
+            usersId: req.user.id,
+            postsId: postId,
+          },
+        });
+      }
       return res.json({
         comment: comment,
         message: "Comment deleted successfully",

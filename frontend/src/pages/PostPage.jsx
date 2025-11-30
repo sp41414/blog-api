@@ -96,7 +96,12 @@ export default function PostPage() {
                     )}
                   </div>
                 </h3>
-                <Comments comments={comments} />
+                <Comments
+                  comments={comments}
+                  postId={id}
+                  setComments={setComments}
+                  setError={setError}
+                />
               </section>
             </article>
           </main>

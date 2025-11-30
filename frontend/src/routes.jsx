@@ -6,6 +6,8 @@ import LoginPage from "./pages/LoginPage";
 import Logout from "./pages/Logout";
 import SignupPage from "./pages/SignupPage";
 import CreateCommentPage from "./pages/CreateCommentPage";
+// admin
+import AdminDashboard from "./pages/admin/AdminDashboard";
 
 const AppRoutes = () => {
   const routes = createBrowserRouter([
@@ -33,8 +35,10 @@ const AppRoutes = () => {
       path: "/logout",
       element: <Logout />,
     },
+    // admin protected routes
     {
       path: "/dashboard",
+      element: <AdminDashboard />,
     },
     {
       path: "*",
