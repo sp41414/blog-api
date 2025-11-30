@@ -6,6 +6,7 @@ import Spinner from "../components/ui/LoadingSpinner";
 import Footer from "../components/Footer";
 import { Link } from "react-router";
 import ErrorAlert from "../components/ui/ErrorAlert";
+import Form from "../components/Form";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -60,62 +61,32 @@ export default function LoginPage() {
       )}
       {!loading && (
         <main className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-8">
-          <div className="w-full max-w-md bg-neutral-800 border border-neutral-800/50 rounded-xl shadow-xl p-8 backdrop-blur-sm">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-emerald-500 mb-2">
-                Welcome Back
-              </h2>
-              <p className="text-neutral-400 text-sm">
-                Enter your information to access your account
-              </p>
-            </div>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label
-                  htmlFor="username"
-                  className="block text-sm font-medium text-neutral-300 mb-2"
-                >
-                  Username
-                </label>
-                <input
-                  type="text"
-                  name="username"
-                  value={formData.username}
-                  onChange={handleChange}
-                  required
-                  className="w-full bg-neutral-950 border border-neutral-700 rounded px-4 py-3 text-neutral-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200 placeholder-neutral-600 mb-8"
-                  placeholder="johndoe"
-                />
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium text-neutral-300 mb-2"
-                >
-                  Password
-                </label>
-                <input
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                  className="w-full bg-neutral-950 border border-neutral-700 rounded px-4 py-3 text-neutral-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-2oo placeholder-neutral-600"
-                  placeholder="••••••••"
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-emerald-500 hover:bg-emerald-400 disabled:bg-emerald-800 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200 hover:scale-[1.02] active:scale-100 disabled:hover:scale-100 flex justify-center items-center cursor-pointer"
-              >
-                {isSubmitting ? (
-                  <Spinner size="sm" color="text-white" />
-                ) : (
-                  "Sign In"
-                )}
-              </button>
-
-              <div className="mt-6 text-center text-sm text-neutral-400">
+          <Form
+            title="Welcome Back"
+            description="Enter your information to access your account"
+            onSubmit={handleSubmit}
+            submitButtonText="Sign In"
+            isSubmitting={isSubmitting}
+            fields={[
+              {
+                name: "username",
+                label: "Username",
+                type: "text",
+                value: formData.username,
+                onChange: handleChange,
+                placeholder: "johndoe",
+              },
+              {
+                name: "password",
+                label: "Password",
+                type: "password",
+                value: formData.password,
+                onChange: handleChange,
+                placeholder: "••••••••",
+              },
+            ]}
+            footer={
+              <>
                 Don't have an account?
                 <Link
                   to="/signup"
@@ -123,9 +94,9 @@ export default function LoginPage() {
                 >
                   Sign Up
                 </Link>
-              </div>
-            </form>
-          </div>
+              </>
+            }
+          />
         </main>
       )}
       <Footer />

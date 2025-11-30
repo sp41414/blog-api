@@ -4,11 +4,11 @@ const postController = require("../controllers/postController");
 const limit = require("express-rate-limit");
 
 const commentLimiter = limit({
-    windowMs: 5 * 60 * 1000, // 5 minutes
-    limit: 3, // 3 comments every 5 minutes
-    standardHeaders: "draft-8",
-    legacyHeaders: false,
-    ipv6Subnet: 56,
+  windowMs: 5 * 60 * 1000, // 5 minutes
+  limit: 10, // 10 comments every 5 minutes
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+  ipv6Subnet: 56,
 });
 
 // get all posts

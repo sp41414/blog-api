@@ -88,7 +88,7 @@ export default function PostPage() {
                     </div>
                     {user && (
                       <Link
-                        to={`/${post.id}/comments/new`}
+                        to={`/post/${post.id}/comments/new`}
                         className="bg-emerald-500 hover:bg-emerald-400 rounded-full p-2 transition-all duration-200 text-xs active:scale-100 hover:scale-105"
                       >
                         Create Comment
