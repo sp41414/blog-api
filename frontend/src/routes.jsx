@@ -9,6 +9,8 @@ import CreateCommentPage from "./pages/CreateCommentPage";
 // admin
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import CreatePost from "./pages/admin/CreatePost";
+import EditPost from "./pages/admin/EditPost";
+import DeletePost from "./pages/admin/DeletePost";
 
 const AppRoutes = () => {
   const routes = createBrowserRouter([
@@ -47,9 +49,11 @@ const AppRoutes = () => {
     },
     {
       path: "/post/:id/edit",
+      element: <EditPost />,
     },
     {
       path: "/post/:id/delete",
+      element: <DeletePost />,
     },
     {
       path: "*",

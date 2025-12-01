@@ -71,7 +71,7 @@ export default function HomePage() {
                 )
               ) : (
                 <p className="text-4xl lg:text-5xl text-white">
-                  Welcome to my
+                  Welcome to my&nbsp;
                   <span className="text-4xl lg:text-5xl text-emerald-500 hover:text-emerald-300 transition-colors duration-500">
                     Blog
                   </span>

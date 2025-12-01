@@ -24,14 +24,14 @@ export default function PostsCards({ posts }) {
           <p className="text-neutral-500 mb-4 text-sm wrap-break-word">
             By: {post.author}
           </p>
-          <div className="flex flex-col md:flex-row gap-2">
+          <div className="flex flex-col md:flex-row gap-2 flex-wrap">
             <Link
               to={`/post/${post.id}`}
               className="inline-block px-4 py-2 bg-emerald-500 text-white rounded-full hover:bg-emerald-400 hover:scale-105 transition-all duration-200 active:scale-95 self-start mt-auto"
             >
               Read More
             </Link>
-            {!loading && user.admin && (
+            {!loading && user?.admin && (
               <>
                 <Link
                   to={`/post/${post.id}/edit`}
