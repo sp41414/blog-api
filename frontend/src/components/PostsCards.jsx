@@ -1,5 +1,8 @@
 import { Link } from "react-router";
+import { AuthContext } from "../contexts/AuthContext";
+import { useContext } from "react";
 export default function PostsCards({ posts }) {
+  const { user, loading } = useContext(AuthContext);
   return (
     <>
       {posts.map((post) => (
@@ -18,13 +21,22 @@ export default function PostsCards({ posts }) {
           <p className="text-neutral-500 mb-4 text-sm wrap-break-word">
             By: {post.author}
           </p>
-
-          <Link
-            to={`/post/${post.id}`}
-            className="inline-block px-4 py-2 bg-emerald-500 text-white rounded-full hover:bg-emerald-400 hover:scale-105 transition-all duration-200 active:scale-95 self-start mt-auto"
-          >
-            Read More
-          </Link>
+          <div className="flex flex-col md:flex-row gap-2">
+            <Link
+              to={`/post/${post.id}`}
+              className="inline-block px-4 py-2 bg-emerald-500 text-white rounded-full hover:bg-emerald-400 hover:scale-105 transition-all duration-200 active:scale-95 self-start mt-auto"
+            >
+              Read More
+            </Link>
+            {!loading && user.admin && (
+              <Link
+                to={`/post/${post.id}/edit`}
+                className="inline-block px-4 py-2 bg-emerald-500 text-white rounded-full hover:bg-emerald-400 hover:scale-105 transition-all duration-200 active:scale-95 self-start mt-auto"
+              >
+                Edit
+              </Link>
+            )}
+          </div>
         </div>
       ))}
     </>

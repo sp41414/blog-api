@@ -136,7 +136,7 @@ const draft = [
         },
       });
       if (posts.length === 0) {
-        return res.status(404).json({
+        return res.status(200).json({
           error: {
             message: "No draft posts found",
             timestamp: new Date().toISOString(),

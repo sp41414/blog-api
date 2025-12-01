@@ -41,6 +41,9 @@ const AppRoutes = () => {
       element: <AdminDashboard />,
     },
     {
+      path: "/posts/new",
+    },
+    {
       path: "*",
       element: <NotFoundPage />,
     },
