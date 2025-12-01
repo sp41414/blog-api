@@ -28,16 +28,32 @@ app.use(
             // allows no origin requests
             if (!origin) return cb(null, true);
 
-            const allowedDomain = process.env.FRONTEND_URL;
+            const allowedOrigin = process.env.FRONTEND_URL;
             // dynamic domains like the one im hosting on (cloudflare pages)
-            if (
-                origin === process.env.FRONTEND_URL ||
-                origin.endsWith(allowedDomain)
-            ) {
+            if (origin === allowedOrigin) {
                 return cb(null, true);
-            } else {
-                return cb(new Error("Not allowed by CORS"));
             }
+
+            // subdomain matching
+            try {
+                const allowedUrl = new URL(allowedOrigin);
+                const originUrl = new URL(origin);
+
+                const allowedParts = allowedUrl.hostname.split(".");
+                const originParts = originUrl.hostname.split(".");
+
+                if (allowedParts.length >= 2 && originParts.length >= 2) {
+                    const allowedRoot = allowedParts.slice(-2).join(".");
+                    const originRoot = originParts.slice(-2).join(".");
+
+                    if (allowedRoot === originRoot) {
+                        return cb(null, true);
+                    }
+                }
+            } catch (err) {
+                console.error("CORS origin parsing error:", err);
+            }
+            return cb(new Error("Not allowed by CORS"));
         },
         credentials: true,
     }),
