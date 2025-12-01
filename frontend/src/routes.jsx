@@ -8,6 +8,7 @@ import SignupPage from "./pages/SignupPage";
 import CreateCommentPage from "./pages/CreateCommentPage";
 // admin
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import CreatePost from "./pages/admin/CreatePost";
 
 const AppRoutes = () => {
   const routes = createBrowserRouter([
@@ -42,6 +43,13 @@ const AppRoutes = () => {
     },
     {
       path: "/posts/new",
+      element: <CreatePost />,
+    },
+    {
+      path: "/post/:id/edit",
+    },
+    {
+      path: "/post/:id/delete",
     },
     {
       path: "*",

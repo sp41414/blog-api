@@ -7,6 +7,7 @@ import Footer from "../components/Footer";
 import { Link } from "react-router";
 import { AuthContext } from "../contexts/AuthContext";
 import Comments from "../components/Comments";
+import DOMPurify from "dompurify";
 
 export default function PostPage() {
   const { user } = useContext(AuthContext);
@@ -74,9 +75,12 @@ export default function PostPage() {
                   </div>
                 )}
               </header>
-              <section className="prose prose-lg max-w-none text-neutral-300 leading-relaxed border-neutral-800 pb-10 wrap-break-word">
-                {post.text}
-              </section>
+              <section
+                className="prose prose-lg prose-invert max-w-none text-neutral-300 leading-relaxed border-neutral-800 pb-10 wrap-break-word"
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(post.text),
+                }}
+              />
               <section>
                 <h3 className="text-2xl font-semibold text-white mb-8">
                   <div className="flex justify-between">

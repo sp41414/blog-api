@@ -48,8 +48,9 @@ export default function AdminDashboard() {
           }
         );
         const draftsData = await drafts.json();
-        if (draftsData.drafts && draftsData.drafts.length !== 0) {
-          setDrafts(draftsData.drafts);
+        console.log(draftsData);
+        if (draftsData.posts && draftsData.posts.length !== 0) {
+          setDrafts(draftsData.posts);
         }
       } catch (err) {
         console.error(err.message);

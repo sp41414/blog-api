@@ -1,6 +1,89 @@
 const passport = require("passport");
 const db = require("../db/prisma");
 const { matchedData, validationResult, body } = require("express-validator");
+const sanitizeHtml = require("sanitize-html");
+
+const sanitizeOptions = {
+  allowedTags: [
+    "address",
+    "article",
+    "aside",
+    "footer",
+    "header",
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5",
+    "h6",
+    "hgroup",
+    "main",
+    "nav",
+    "section",
+    "blockquote",
+    "dd",
+    "div",
+    "dl",
+    "dt",
+    "figcaption",
+    "figure",
+    "hr",
+    "li",
+    "main",
+    "ol",
+    "p",
+    "pre",
+    "ul",
+    "a",
+    "abbr",
+    "b",
+    "bdi",
+    "bdo",
+    "br",
+    "cite",
+    "code",
+    "data",
+    "dfn",
+    "em",
+    "i",
+    "kbd",
+    "mark",
+    "q",
+    "rb",
+    "rp",
+    "rt",
+    "rtc",
+    "ruby",
+    "s",
+    "samp",
+    "small",
+    "span",
+    "strong",
+    "sub",
+    "sup",
+    "time",
+    "u",
+    "var",
+    "wbr",
+    "caption",
+    "col",
+    "colgroup",
+    "table",
+    "tbody",
+    "td",
+    "tfoot",
+    "th",
+    "thead",
+    "tr",
+    "img",
+  ],
+  allowedAttributes: {
+    "*": ["class", "style"],
+    a: ["href", "name", "target"],
+    img: ["src", "srcset", "alt", "title", "width", "height", "loading"],
+  },
+  allowedSchemes: ["http", "https", "mailto", "tel"],
+};
 
 const validateComment = [
   body("text")
@@ -22,8 +105,7 @@ const validatePost = [
     .withMessage("Title must be a string.")
     .trim()
     .isLength({ min: 1, max: 100 })
-    .withMessage("Title must be between 1 and 100 characters long")
-    .escape(),
+    .withMessage("Title must be between 1 and 100 characters long"),
   body("text")
     .exists()
     .withMessage("Post text is required.")
@@ -31,8 +113,7 @@ const validatePost = [
     .withMessage("Text must be a string.")
     .trim()
     .isLength({ min: 1 })
-    .withMessage("Text cannot be empty")
-    .escape(),
+    .withMessage("Text cannot be empty"),
   body("published")
     .optional()
     .isBoolean()
@@ -47,16 +128,14 @@ const validatePostUpdate = [
     .withMessage("Title must be a string.")
     .trim()
     .isLength({ min: 1, max: 100 })
-    .withMessage("Title must be between 1 and 100 characters long")
-    .escape(),
+    .withMessage("Title must be between 1 and 100 characters long"),
   body("text")
     .optional()
     .isString()
     .withMessage("Text must be a string.")
     .trim()
     .isLength({ min: 1 })
-    .withMessage("Text cannot be empty")
-    .escape(),
+    .withMessage("Text cannot be empty"),
   body("published")
     .optional()
     .isBoolean()
@@ -318,10 +397,13 @@ const newPost = [
     }
     try {
       const { title, text, published } = matchedData(req);
+
+      const sanitizedText = sanitizeHtml(text, sanitizeOptions);
+
       const post = await db.posts.create({
         data: {
           title: title,
-          text: text,
+          text: sanitizedText,
           usersId: req.user.id,
           author: req.user.username,
           published: published,
@@ -370,13 +452,17 @@ const updatePost = [
       const { title, text, published } = matchedData(req);
       const postId = Number(req.params.id);
 
+      const sanitizedText = text
+        ? sanitizeHtml(text, sanitizeOptions)
+        : undefined;
+
       const updatedPost = await db.posts.update({
         where: {
           id: postId,
         },
         data: {
           title: title,
-          text: text,
+          text: sanitizedText,
           published: published,
         },
       });
