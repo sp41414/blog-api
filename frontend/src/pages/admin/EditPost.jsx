@@ -179,7 +179,7 @@ export default function EditPost() {
                 disabled={isSubmitting}
                 className="flex-1 px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
-                {isSubmitting ? <Spinner /> : "Publish Update"}
+                {isSubmitting ? <Spinner /> : "Publish"}
               </button>
               <button
                 onClick={() => navigate("/dashboard")}

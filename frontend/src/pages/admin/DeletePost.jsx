@@ -35,7 +35,7 @@ export default function DeletePost() {
         setError(err.error.message);
       } finally {
         setLoading(false);
-        navigate("/");
+        navigate("/dashboard");
       }
     }
     deletePost();
