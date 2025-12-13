@@ -7,7 +7,7 @@ import ErrorAlert from "../components/ui/ErrorAlert";
 import { AuthContext } from "../contexts/AuthContext";
 
 export default function HomePage() {
-    const { user } = useContext(AuthContext);
+    const { user, loading: authLoading } = useContext(AuthContext);
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -39,7 +39,7 @@ export default function HomePage() {
     return (
         <div className="flex flex-col min-h-screen bg-neutral-900 overflow-x-hidden">
             <NavBar />
-            {loading && (
+            {(loading || authLoading) && (
                 <main className="flex-1 flex flex-col items-center justify-center">
                     <Spinner size="xl" />
                 </main>
@@ -49,7 +49,7 @@ export default function HomePage() {
                     <ErrorAlert message={error} />
                 </main>
             )}
-            {!loading && (
+            {!loading && !authLoading && (
                 <>
                     <main className="flex-1 p-4">
                         <section className="flex pb-12 pt-12 items-center justify-center">

@@ -27,7 +27,7 @@ export default function NavBar() {
                                     Logout
                                 </Link>
                             </li>
-                            {user && user?.admin && (
+                            {user?.admin && (
                                 <li>
                                     <Link
                                         to="/dashboard"
