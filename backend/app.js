@@ -24,37 +24,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
     cors({
-        origin: (origin, cb) => {
-            // allows no origin requests
-            if (!origin) return cb(null, true);
-
-            const allowedOrigin = process.env.FRONTEND_URL;
-            // dynamic domains like the one im hosting on (cloudflare pages)
-            if (origin === allowedOrigin) {
-                return cb(null, true);
-            }
-
-            // subdomain matching
-            try {
-                const allowedUrl = new URL(allowedOrigin);
-                const originUrl = new URL(origin);
-
-                const allowedParts = allowedUrl.hostname.split(".");
-                const originParts = originUrl.hostname.split(".");
-
-                if (allowedParts.length >= 2 && originParts.length >= 2) {
-                    const allowedRoot = allowedParts.slice(-2).join(".");
-                    const originRoot = originParts.slice(-2).join(".");
-
-                    if (allowedRoot === originRoot) {
-                        return cb(null, true);
-                    }
-                }
-            } catch (err) {
-                console.error("CORS origin parsing error:", err);
-            }
-            return cb(new Error("Not allowed by CORS"));
-        },
+        origin: [process.env.FRONTEND_URL, "http://localhost:8888", "http://localhost:4173"],
         credentials: true,
     }),
 );
