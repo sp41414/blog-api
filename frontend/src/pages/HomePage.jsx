@@ -39,8 +39,7 @@ export default function HomePage() {
 
     return (
         <div className="flex flex-col min-h-screen bg-neutral-900 overflow-x-hidden">
-            {console.log('user.admin, before loaded check:', user.admin)}
-            <NavBar />
+            {console.log('user.admin, before loaded check:', user?.admin)}
             {(loading || authLoading) && (
                 <main className="flex-1 flex flex-col items-center justify-center">
                     <Spinner size="xl" />
@@ -53,10 +52,11 @@ export default function HomePage() {
             )}
             {!loading && !authLoading && (
                 <>
-                    {console.log('user.admin:', user.admin)}
+                    <NavBar />
+                    {console.log('user.admin:', user?.admin)}
                     <main className="flex-1 p-4">
                         <section className="flex pb-12 pt-12 items-center justify-center">
-                            {user && user.admin ? (
+                            {user && user?.admin ? (
                                 <p className="text-4xl lg:text-5xl text-white">
                                     Welcome to your Blog,{" "}
                                     <span className="text-4xl lg:text-5xl text-emerald-500 hover:text-emerald-300 transition-colors duration-500">

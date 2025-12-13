@@ -51,7 +51,7 @@ export default function PostPage() {
 
     return (
         <div className="flex flex-col min-h-screen bg-neutral-900 overflow-x-hidden">
-            {console.log("pre loading check, post page, admin user:", user.admin)}
+            {console.log("pre loading check, post page, admin user:", user?.admin)}
             <NavBar />
             {loading || authLoading && (
                 <main className="flex-1 flex flex-col items-center justify-center">
