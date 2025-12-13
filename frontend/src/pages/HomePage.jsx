@@ -11,6 +11,7 @@ export default function HomePage() {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    console.log('homepage - user', user, 'authloading', authLoading)
 
     useEffect(() => {
         async function fetchPosts() {
@@ -38,6 +39,7 @@ export default function HomePage() {
 
     return (
         <div className="flex flex-col min-h-screen bg-neutral-900 overflow-x-hidden">
+            {console.log('user.admin, before loaded check:', user.admin)}
             <NavBar />
             {(loading || authLoading) && (
                 <main className="flex-1 flex flex-col items-center justify-center">
@@ -51,6 +53,7 @@ export default function HomePage() {
             )}
             {!loading && !authLoading && (
                 <>
+                    {console.log('user.admin:', user.admin)}
                     <main className="flex-1 p-4">
                         <section className="flex pb-12 pt-12 items-center justify-center">
                             {user && user.admin ? (

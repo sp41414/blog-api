@@ -16,6 +16,7 @@ export default function PostPage() {
     const [error, setError] = useState("");
     const [post, setPost] = useState([]);
     const [comments, setComments] = useState([]);
+    console.log("postpage - user:", user, "authloading:", authLoading)
 
     useEffect(() => {
         async function fetchPost() {
@@ -50,6 +51,7 @@ export default function PostPage() {
 
     return (
         <div className="flex flex-col min-h-screen bg-neutral-900 overflow-x-hidden">
+            {console.log("pre loading check, post page, admin user:", user.admin)}
             <NavBar />
             {loading || authLoading && (
                 <main className="flex-1 flex flex-col items-center justify-center">
@@ -63,6 +65,7 @@ export default function PostPage() {
             )}
             {!loading && !error && !authLoading && (
                 <>
+                    {console.log("post loading check, post page, admin user:", user.admin)}
                     <main className="flex-1 py-12 px-4 sm:px-6 lg:px-8">
                         <article className="max-w-3xl mx-auto space-y-10">
                             <header className="space-y-4 border-b border-neutral-800 pb-10">
